@@ -29,7 +29,7 @@ public class Twitter {
         conn.setRequestMethod("GET");
 
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        BufferedReader in = new  BufferedReader(new InputStreamReader(conn.getInputStream()));
         String output;
 
         StringBuffer response = new StringBuffer();
@@ -51,6 +51,7 @@ public class Twitter {
             Tweet t = new Tweet(o.getString("created_at"),o.getString("author_id"),o.getString("id"),o.getString("text"));
             tweetList.add(t);
         }
+
 
 
         return tweetList;
