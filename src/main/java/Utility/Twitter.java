@@ -1,3 +1,5 @@
+package Utility;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -6,20 +8,26 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import  Models.Tweet;
+import lombok.RequiredArgsConstructor;
+
 
 public class Twitter {
 
+    private static Utility.Config config;
 
-    public  List<Tweet> getTodayTweet() throws Exception {
+    public  List<Tweet> getTodayTweet(String keyword) throws Exception {
+       config = new Config();
+        String bearerToken = config.getBearerToken();
 
-        String bearerToken = "AAAAAAAAAAAAAAAAAAAAANw2bQEAAAAA7CxJhaarDSXibKWhDD4tRc8ZmmI%3DZt6Uf03ikTXLcDms2CjwI2O5zB7twnHRztKepYPlthF2rCMOtv";
-
-        URL url = new URL("https://api.twitter.com/2/tweets/search/recent?query=bitcoin&tweet.fields=author_id,created_at,text");
+        URL url =  new URL(String.format(config.getUrl(),URLEncoder.encode(keyword,StandardCharsets.UTF_8.toString())));
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setRequestProperty("Authorization","Bearer "+ bearerToken);
@@ -48,7 +56,7 @@ public class Twitter {
         for (int i = 0; i < obj1.length(); i++){
             JSONObject o = obj1.getJSONObject(i);
 
-            Tweet t = new Tweet(o.getString("created_at"),o.getString("author_id"),o.getString("id"),o.getString("text"));
+            Tweet t = new Tweet(o.getString("created_at"),o.getString("author_id"),o.getString("id"),o.getString("text"),"");
             tweetList.add(t);
         }
 
