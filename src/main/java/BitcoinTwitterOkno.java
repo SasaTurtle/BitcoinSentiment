@@ -15,7 +15,6 @@ import java.util.List;
 
 public class BitcoinTwitterOkno extends JFrame {
     private GridLayout gridLayout;
-    //private JPanel Bitcoin_Sentiment;
     private JTextField twitterKeyword;
     private JLabel labelKeyword;
     private JButton button1;
@@ -36,14 +35,14 @@ public class BitcoinTwitterOkno extends JFrame {
 
     List<Tweet> list;
 
+    /**
+     * Vytvoreni gui okna s daty
+     * @param title nazev okna (Twitter sentiment)
+     */
     public BitcoinTwitterOkno(String title) {
         super(title);
         list = new ArrayList<Tweet>();
         setBounds(500, 500, 500, 500);
-        //Container container = getContentPane();
-        //container.setLayout(new FlowLayout());
-        //container.setLayout(new BorderLayout());
-        //this.setContentPane(new BitcoinTwitterOkno().Bitcoin_Sentiment);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         menuBar = new JMenuBar();
@@ -59,13 +58,10 @@ public class BitcoinTwitterOkno extends JFrame {
         //Obrazovka 1
         labelKeyword = new JLabel();
         labelKeyword.setText("Klíčové slovo");
-        //labelKeyword.setHorizontalAlignment(JLabel.LEFT);
         twitterKeyword = new JTextField();
-        //  twitterKeyword.setHorizontalAlignment(JLabel.CENTER);
 
         button1 = new JButton();
         button1.setText("Hledej");
-        //button1.setHorizontalAlignment(JLabel.RIGHT);
         twitterTable = new JTable();
         ulozButton = new JButton();
         ulozButton.setText("Ulož");
@@ -79,15 +75,11 @@ public class BitcoinTwitterOkno extends JFrame {
         centralPanel = new JPanel();
         centralPanel.setLayout(new GridLayout());
         centralPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Zprávy z twitteru", TitledBorder.CENTER, TitledBorder.TOP));
-        //centralPanel.setBackground(Color.green);
-
         String[] columnNames = {"Tweety", "Sentiment", "ID autora", "Datum"};
-        //Object[][] data = {{"Swing Timer", 2.99, 5, 1.01}, {"Swing Worker", 7.10, 5, 1.010}, {"TableModelListener", 25.05, 5, 1.01}};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         twitterTable = new JTable(model);
         twitterTable.getColumnModel().getColumn(0).setPreferredWidth(1200);
 
-        //twitterTable.setPreferredScrollableViewportSize(twitterTable.getPreferredSize());
         centralPanel.add(new JScrollPane(twitterTable), BorderLayout.CENTER);
 
         bottomPanel = new JPanel();
@@ -114,7 +106,6 @@ public class BitcoinTwitterOkno extends JFrame {
 
         panel2.setLayout(new BorderLayout());
         panel2.add(new JScrollPane(twitterHistory),BorderLayout.CENTER);
-
 
         panelMain.add(panel1,"1");
         panelMain.add(panel2,"2");
@@ -158,6 +149,10 @@ public class BitcoinTwitterOkno extends JFrame {
         });
     }
 
+    /**
+     * Vyhleda twiterove zpravy a nasledne je zanalizuje (sentiment)
+      */
+
     private void search () {
             Sentiment sentiment = new Sentiment();
             List<Tweet> tweet = sentiment.getTwitterAndAnalyzeSentiment(twitterKeyword.getText());
@@ -167,6 +162,11 @@ public class BitcoinTwitterOkno extends JFrame {
             createTableData(tweet);
     }
 
+    /**
+     * Vlozeni tweetu do tabulky
+     * @param list List informaci o tweetu (tweet, sentiment, id uzivatele a datum napsani tweetu)
+     */
+
     private void createTableData (List<Tweet> list) {
             DefaultTableModel model = (DefaultTableModel) twitterTable.getModel();
 
@@ -175,6 +175,11 @@ public class BitcoinTwitterOkno extends JFrame {
             }
 
     }
+
+    /**
+     * Ulozeni tweetu do csv souboru
+     * @param list List informaci o tweetu, ktere chceme ulozit (tweet, sentiment, id uzivatele a datum napsani tweetu)
+     */
 
     private void saveTweets (List<Tweet> list) {
         try (PrintWriter writer = new PrintWriter("ulozeneTweety.csv")) {
@@ -190,6 +195,11 @@ public class BitcoinTwitterOkno extends JFrame {
             System.out.println(e.getMessage());
         }
     }
+
+    /**
+     * Precteni csv souboru a nasledne vlozeni informaci do tabulky pro ulozene tweety
+     */
+
     private void createHistoryTableData () {
         String line = "";
         String splitBy = ",";
