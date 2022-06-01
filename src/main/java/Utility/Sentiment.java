@@ -14,6 +14,9 @@ import java.util.Properties;
 import Models.Tweet;
 
 public class Sentiment {
+    /**
+     * Seznam enumeratoru
+     */
     public enum TypeSentiment {
         VERY_NEGATIVE(0), NEGATIVE(1), NEUTRAL(2), POSITIVE(3), VERY_POSITIVE(4);
 
@@ -21,6 +24,12 @@ public class Sentiment {
         private TypeSentiment(int index) {
             this.index = index;
         }
+
+        /**
+         * Vraci enumerator podle indexu
+         * @param index index enumeratoru
+         * @return
+         */
 
         public static TypeSentiment fromIndex(int index) {
             for (TypeSentiment typeSentiment: values()) {
@@ -32,6 +41,12 @@ public class Sentiment {
             return TypeSentiment.NEUTRAL;
         }
     }
+
+    /**
+     * Stahuje podle klicoveho slova tweety z twiteru a nasledne je analizuje (sentiment)
+     * @param text klicove slovo
+     * @return vraci seznam twitterovych zprav se sentimentem (list tweet)
+     */
 
     public List<Tweet> getTwitterAndAnalyzeSentiment(String text){
         HashMap< TypeSentiment, Integer > sentiments = new HashMap <Sentiment.TypeSentiment, Integer > ();
@@ -52,6 +67,13 @@ public class Sentiment {
         }
         return list;
     }
+
+    /**
+     * Urcuje sentiment pro dannou vetu pomoci standfordskych knihoven
+     * @param text veta ktera bude analyzovana (text tweetu)
+     * @return vraci numerator sentimentu
+     */
+
     public static Sentiment.TypeSentiment analyzeSentiment(String text) {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, parse, sentiment");

@@ -14,6 +14,11 @@ public class Config {
     @Getter
     private String url;
 
+    /**
+     * Stahne vsecna nastaveni v config.properties souboru
+     * @throws IOException
+     */
+
     public Config() throws IOException {
         InputStream inputStream = null;
         try {

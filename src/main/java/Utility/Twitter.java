@@ -2,26 +2,27 @@ package Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import  Models.Tweet;
-import lombok.RequiredArgsConstructor;
 
 
 public class Twitter {
 
     private static Utility.Config config;
+
+    /**
+     * Ciste ztahuje data z API twitteru podle klicoveho slova, API url twitteru a bearer token jsou v config souboru
+     * @param keyword klicove slovo
+     * @return vraci list tweetu bez sentimentu
+     * @throws Exception
+     */
 
     public  List<Tweet> getTodayTweet(String keyword) throws Exception {
        config = new Config();
@@ -46,7 +47,6 @@ public class Twitter {
         }
 
         in.close();
-        // printing result from response
         System.out.println("Response:-" + response.toString());
 
         JSONObject obj = new JSONObject(response.toString());
